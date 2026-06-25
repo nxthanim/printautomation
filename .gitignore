@@ -12,3 +12,9 @@ client/node_modules/
 client/*.pfx
 client/release/
 client/PrintAutomationClient-win32-x64/
+client/build/
+client/config.ini
+client/err.txt
+server/storage/
+server/*.pfx
+*.env

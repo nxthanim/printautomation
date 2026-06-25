@@ -2,7 +2,7 @@ import os
 import uuid
 import logging
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query
@@ -68,7 +68,7 @@ async def verify_token(
     client = result.scalar_one_or_none()
     if not client:
         raise HTTPException(status_code=401, detail="Invalid or expired API token")
-    client.last_seen = datetime.utcnow()
+    client.last_seen = datetime.now(timezone.utc)
     await db.flush()
     return client
 
@@ -246,7 +246,7 @@ async def update_job_status(
     old_status = job.status.value
     new_status = update.status
     job.status = JobStatus(new_status)
-    job.updated_at = datetime.utcnow()
+    job.updated_at = datetime.now(timezone.utc)
 
     log = JobLog(
         job_id=job.id,
@@ -277,7 +277,7 @@ async def update_job_status(
         remaining_count = remaining.scalar()
         if remaining_count == 0 and order:
             order.status = OrderStatus.completed
-            order.updated_at = datetime.utcnow()
+            order.updated_at = datetime.now(timezone.utc)
             logger.info("Order %s completed (all jobs done)", order.id)
 
     elif new_status == "failed":
@@ -293,7 +293,7 @@ async def update_job_status(
         else:
             if order:
                 order.status = OrderStatus.pending
-                order.updated_at = datetime.utcnow()
+                order.updated_at = datetime.now(timezone.utc)
                 send_email_notification(
                     settings.notification_email,
                     f"Job {job.id} failed after 3 retries",
@@ -395,7 +395,7 @@ async def configure_email(
 
 @app.get("/api/health")
 async def health():
-    return {"status": "ok", "timestamp": datetime.utcnow().isoformat()}
+    return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
 
 
 if __name__ == "__main__":

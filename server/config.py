@@ -5,7 +5,6 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     database_type: str = "sqlite"
     database_url: str = "sqlite+aiosqlite:///./printautomation.db"
-    postgres_url: str = "postgresql+asyncpg://printuser:printpass@localhost:5432/printautomation"
     redis_url: str = "redis://localhost:6379/0"
     secret_key: str = "change-me-in-production"
     token_expiry_hours: int = 24
@@ -26,6 +25,16 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 
 settings = Settings()
+
+# Auto-detect PostgreSQL from Render's DATABASE_URL env var
+_raw_db_url = os.environ.get("DATABASE_URL")
+if _raw_db_url:
+    if _raw_db_url.startswith("postgresql://"):
+        settings.database_url = _raw_db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    else:
+        settings.database_url = _raw_db_url
+    settings.database_type = "postgres"

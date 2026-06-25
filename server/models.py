@@ -1,9 +1,13 @@
 import uuid
 import enum
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import String, Integer, DateTime, ForeignKey, Enum, Text, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
+
+
+def _utcnow():
+    return datetime.now(timezone.utc)
 
 
 class PrinterStatus(str, enum.Enum):
@@ -33,8 +37,8 @@ class Client(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     api_token: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
-    last_seen: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    last_seen: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     printers: Mapped[list["Printer"]] = relationship(back_populates="client", cascade="all, delete-orphan")
     job_assignments: Mapped[list["JobAssignment"]] = relationship(back_populates="client", cascade="all, delete-orphan")
@@ -48,7 +52,7 @@ class Printer(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[PrinterStatus] = mapped_column(Enum(PrinterStatus), default=PrinterStatus.idle, nullable=False)
     active_jobs: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    last_heartbeat: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    last_heartbeat: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     client: Mapped["Client"] = relationship(back_populates="printers")
     job_assignments: Mapped[list["JobAssignment"]] = relationship(back_populates="printer")
@@ -65,8 +69,8 @@ class Order(Base):
     pdf_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
     receipt_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[OrderStatus] = mapped_column(Enum(OrderStatus), default=OrderStatus.pending, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
     jobs: Mapped[list["JobAssignment"]] = relationship(back_populates="order", cascade="all, delete-orphan")
 
@@ -79,8 +83,8 @@ class JobAssignment(Base):
     printer_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("printers.id", ondelete="SET NULL"), nullable=True)
     client_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("clients.id", ondelete="SET NULL"), nullable=True)
     status: Mapped[JobStatus] = mapped_column(Enum(JobStatus), default=JobStatus.pending, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
     retry_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
@@ -96,6 +100,6 @@ class JobLog(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     job_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("job_assignments.id", ondelete="CASCADE"), nullable=False)
     message: Mapped[str] = mapped_column(Text, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     job: Mapped["JobAssignment"] = relationship(back_populates="logs")
