@@ -8,7 +8,7 @@ export default function Dashboard({ notify }) {
   const [fieryPrinters, setFieryPrinters] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [history, setHistory] = useState([]);
-  const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || 'https://print-automation.local');
+  const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || 'http://localhost:8000');
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [clientId, setClientId] = useState(localStorage.getItem('clientId') || '');
   const [form, setForm] = useState({ customerName: '', customerTin: '', customerReg: '', customerPhone: '', paperSize: '' });
@@ -67,8 +67,11 @@ export default function Dashboard({ notify }) {
         localStorage.setItem('clientId', data.client_id);
         setStatus('Registered successfully');
         notify('Registered with server', 'success');
-      } else notify('Registration failed', 'error');
-    } catch (e) { notify('Server unreachable', 'error'); }
+      } else {
+        const errText = await res.text();
+        notify('Registration: ' + (errText || res.statusText), 'error');
+      }
+    } catch (e) { notify('Server unreachable: ' + e.message, 'error'); }
   };
 
   const submitOrder = async (e) => {
