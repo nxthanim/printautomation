@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -54,6 +55,14 @@ app = FastAPI(
 
 if os.path.isdir(web_dir):
     app.mount("/web", StaticFiles(directory=web_dir, html=True), name="web")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 async def verify_token(
