@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Automation Client</title>
+  <script>
+    window.onerror = function(msg, url, line, col, err) {
+      document.getElementById('root').innerHTML =
+        '<div style="padding:2rem;font-family:sans-serif;color:#c62828">' +
+        '<h2>App Error</h2>' +
+        '<p>' + msg + '</p>' +
+        '<pre style="background:#f5f5f5;padding:1rem;overflow:auto;font-size:0.8rem">' +
+        (err && err.stack ? err.stack : (err ? err.toString() : '')) + '</pre></div>';
+      return true;
+    };
+    window.onunhandledrejection = function(e) {
+      document.getElementById('root').innerHTML =
+        '<div style="padding:2rem;font-family:sans-serif;color:#c62828">' +
+        '<h2>Unhandled Promise Rejection</h2>' +
+        '<pre style="background:#f5f5f5;padding:1rem;overflow:auto;font-size:0.8rem">' +
+        (e.reason && e.reason.stack ? e.reason.stack : (e.reason ? e.reason.toString() : String(e))) +
+        '</pre></div>';
+      e.preventDefault();
+    };
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
