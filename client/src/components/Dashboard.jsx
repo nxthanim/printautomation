@@ -3,12 +3,15 @@ import FieryConfig from './FieryConfig';
 
 var API = window.api || { getPrinters: function() { return Promise.resolve([]); }, detectFiery: function() { return Promise.resolve([]); }, getTempDir: function() { return Promise.resolve(''); }, saveFile: function() { return Promise.resolve(null); }, downloadFile: function() { return Promise.resolve({ success: false }); }, printPdf: function() { return Promise.resolve({ success: false, error: 'API not available' }); }, printRawToIp: function() { return Promise.resolve({ success: false, error: 'API not available' }); }, sendToPrinter: function() { return Promise.resolve({ success: false, error: 'API not available' }); }, getStatus: function() { return Promise.resolve({ status: 'unknown' }); }, registerToken: function() { return Promise.reject('API not available'); }, testConnection: function() { return Promise.reject('API not available'); }, calculateCost: function() { return Promise.resolve({ cost: 0, breakdown: {} }); }, generateReceiptPdf: function() { return Promise.resolve({ success: false, error: 'API not available' }); } };
 
+function normUrl(u) { return (u || '').trim().replace(/\/+$/, ''); }
+
 export default function Dashboard({ notify }) {
   const [printers, setPrinters] = useState([]);
   const [fieryPrinters, setFieryPrinters] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [history, setHistory] = useState([]);
-  const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || 'http://localhost:8000');
+  const savedUrl = localStorage.getItem('serverUrl');
+  const [serverUrl, setServerUrl] = useState((savedUrl && savedUrl.trim()) ? savedUrl.trim() : 'http://localhost:8000');
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [clientId, setClientId] = useState(localStorage.getItem('clientId') || '');
   const [form, setForm] = useState({ customerName: '', customerTin: '', customerReg: '', customerPhone: '', paperSize: '' });
@@ -29,8 +32,9 @@ export default function Dashboard({ notify }) {
 
   const fetchJobs = useCallback(async () => {
     if (!clientId || !token || !serverUrl) return;
+    const url = serverUrl.trim().replace(/\/+$/, '');
     try {
-      const res = await fetch(serverUrl + '/api/jobs/pending?client_id=' + clientId, {
+      const res = await fetch(url + '/api/jobs/pending?client_id=' + clientId, {
         headers: { Authorization: 'Bearer ' + token },
       });
       if (res.ok) setJobs(await res.json());
@@ -54,9 +58,10 @@ export default function Dashboard({ notify }) {
 
   const register = async () => {
     try {
+      const url = serverUrl.trim().replace(/\/+$/, '');
       const p = await API.getPrinters();
       const names = (Array.isArray(p) ? p : []).map(function(x) { return x.Name || x.name; }).filter(Boolean);
-      const res = await fetch(serverUrl + '/api/register', {
+      const res = await fetch(url + '/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_name: 'ElectronClient', api_token: token, printers: names }),
@@ -83,28 +88,33 @@ export default function Dashboard({ notify }) {
     fd.append('customer_registration', form.customerReg);
     fd.append('customer_phone', form.customerPhone);
     fd.append('pdf', selectedFile);
+    const url = serverUrl.trim().replace(/\/+$/, '');
     try {
-      var res = await fetch(serverUrl + '/api/orders', { method: 'POST', body: fd });
+      var res = await fetch(url + '/api/orders', { method: 'POST', headers: { Authorization: 'Bearer ' + token }, body: fd });
       if (res.ok) {
         notify('Order submitted', 'success');
         setForm({ customerName: '', customerTin: '', customerReg: '', customerPhone: '' });
         setSelectedFile(null);
         setTimeout(fetchJobs, 1000);
-      } else notify('Order failed', 'error');
-    } catch { notify('Server error', 'error'); }
+      } else {
+        var errText = await res.text();
+        notify('Order failed: ' + (errText || res.statusText), 'error');
+      }
+    } catch (e) { notify('Server error: ' + e.message, 'error'); }
   };
 
   const printPending = async () => {
     var tmpDir = await API.getTempDir();
+    var url = normUrl(serverUrl);
     for (var i = 0; i < jobs.length; i++) {
       var job = jobs[i];
       setStatus('Printing job ' + job.job_id.slice(0, 8) + '...');
       var pdfPath = tmpDir + '/print_' + job.job_id + '.pdf';
-      var dl = await API.downloadFile({ url: job.pdf_url, destPath: pdfPath, token: token, serverUrl: serverUrl });
+      var dl = await API.downloadFile({ url: job.pdf_url, destPath: pdfPath, token: token, serverUrl: url });
       if (!dl.success) { notify('Download failed: ' + job.job_id, 'error'); continue; }
       var pr = await API.printPdf({ pdfPath: pdfPath, printerName: job.printer_name, paperSize: defaultPaper });
       if (pr.success) {
-        await fetch(serverUrl + '/api/jobs/status', {
+        await fetch(url + '/api/jobs/status', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
           body: JSON.stringify({ job_id: job.job_id, status: 'completed', message: 'Printed via Electron' }),
@@ -190,7 +200,8 @@ export default function Dashboard({ notify }) {
     <div>
       <div className="card" style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <span>{status}</span>
-        <input value={serverUrl} onChange={function(e) { setServerUrl(e.target.value); localStorage.setItem('serverUrl', e.target.value); }}
+        <input value={serverUrl} onChange={function(e) { setServerUrl(e.target.value); }}
+          onBlur={function(e) { localStorage.setItem('serverUrl', e.target.value.trim()); }}
           placeholder="Server URL" style={{ width: 260 }} />
         <input value={token} onChange={function(e) { setToken(e.target.value); localStorage.setItem('token', e.target.value); }}
           placeholder="API Token" type="password" style={{ width: 200 }} />
