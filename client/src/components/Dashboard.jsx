@@ -79,6 +79,25 @@ export default function Dashboard({ notify }) {
     } catch (e) { notify('Server unreachable: ' + e.message, 'error'); }
   };
 
+  const regenerateToken = async () => {
+    try {
+      const url = serverUrl.trim().replace(/\/+$/, '');
+      const res = await fetch(url + '/api/clients/token', {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.api_token);
+        localStorage.setItem('token', data.api_token);
+        notify('Token regenerated', 'success');
+      } else {
+        const errText = await res.text();
+        notify('Token refresh: ' + (errText || res.statusText), 'error');
+      }
+    } catch (e) { notify('Server unreachable: ' + e.message, 'error'); }
+  };
+
   const submitOrder = async (e) => {
     e.preventDefault();
     if (!selectedFile) { notify('Select a PDF file', 'error'); return; }
@@ -206,6 +225,7 @@ export default function Dashboard({ notify }) {
         <input value={token} onChange={function(e) { setToken(e.target.value); localStorage.setItem('token', e.target.value); }}
           placeholder="API Token" type="password" style={{ width: 200 }} />
         <button className="btn" onClick={register}>Register</button>
+        <button className="btn" onClick={regenerateToken}>Refresh Token</button>
         <button className="btn btn-success" onClick={printPending} disabled={jobs.length === 0}>Print All ({jobs.length})</button>
       </div>
 

@@ -6,7 +6,7 @@ from uuid import UUID
 
 class RegisterRequest(BaseModel):
     client_name: str = Field(..., min_length=1, max_length=255)
-    printers: list[str] = Field(..., min_length=1)
+    printers: list[str] = Field(default_factory=list)
     api_token: str = Field(..., min_length=8, max_length=255)
 
 

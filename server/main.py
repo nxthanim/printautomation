@@ -402,6 +402,19 @@ async def configure_email(
     return {"success": True, "email": to}
 
 
+@app.put("/api/clients/token")
+async def regenerate_token(
+    db: AsyncSession = Depends(get_db),
+    client: Client = Depends(require_token),
+):
+    new_token = uuid.uuid4().hex[:24]
+    client.api_token = new_token
+    await db.flush()
+    await db.commit()
+    logger.info("Token regenerated for client %s", client.id)
+    return {"client_id": str(client.id), "api_token": new_token}
+
+
 @app.get("/api/health")
 async def health():
     return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
