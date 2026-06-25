@@ -6,18 +6,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: print-automation-db
-          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: CELERY_ENABLED
         value: "false"
-
-databases:
-  - databaseType: postgresql
-    name: print-automation-db
-    databaseName: printautomation
-    plan: free
-    ipAllowList: []
