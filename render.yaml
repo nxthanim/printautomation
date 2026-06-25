@@ -16,7 +16,8 @@ services:
         value: "false"
 
 databases:
-  - type: postgresql
+  - databaseType: postgresql
     name: print-automation-db
     databaseName: printautomation
+    plan: free
     ipAllowList: []
