@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 var API = window.api || {};
 
 export default function Settings({ notify }) {
-  var [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || 'https://print-automation.local');
+  var [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || 'http://localhost:8000');
   var [token, setToken] = useState(localStorage.getItem('token') || '');
   var [sumatraPath, setSumatraPath] = useState(localStorage.getItem('sumatraPath') || '');
   var [email, setEmail] = useState(localStorage.getItem('emailTo') || '');
@@ -28,7 +28,7 @@ export default function Settings({ notify }) {
     <div className="card" style={{ maxWidth: 600 }}>
       <h2>Settings</h2>
       <div className="form-grid" style={{ gridTemplateColumns: '1fr' }}>
-        <label>Server URL <input value={serverUrl} onChange={function(e) { setServerUrl(e.target.value); }} placeholder="https://print-automation.local" /></label>
+        <label>Server URL <input value={serverUrl} onChange={function(e) { setServerUrl(e.target.value); }} placeholder="http://localhost:8000" /></label>
         <label>API Token <input value={token} onChange={function(e) { setToken(e.target.value); }} type="password" /></label>
         <label>SumatraPDF Path <input value={sumatraPath} onChange={function(e) { setSumatraPath(e.target.value); }} placeholder="tools/SumatraPDF.exe" /></label>
         <label>Default Paper Size
