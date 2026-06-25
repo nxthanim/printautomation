@@ -5,6 +5,7 @@ const url = require('url');
 const { execSync, exec, spawn } = require('child_process');
 const fs = require('fs');
 const https = require('https');
+const http = require('http');
 
 var mainWindow;
 
@@ -160,9 +161,10 @@ ipcMain.handle('print-pdf', async (e, { pdfPath, printerName, paperSize, sumatra
 
 ipcMain.handle('download-file', async (e, { url, destPath, token, serverUrl }) => {
   return new Promise((resolve) => {
-    const fullUrl = (serverUrl + url).replace('https://', 'https://');
+    const fullUrl = serverUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+    const proto = fullUrl.startsWith('https') ? https : http;
     const file = fs.createWriteStream(destPath);
-    https.get(fullUrl, { headers: { Authorization: `Bearer ${token}` } }, (res) => {
+    proto.get(fullUrl, { headers: { Authorization: `Bearer ${token}` } }, (res) => {
       if (res.statusCode !== 200) { resolve({ success: false, error: `HTTP ${res.statusCode}` }); return; }
       res.pipe(file);
       file.on('finish', () => { file.close(); resolve({ success: true }); });
