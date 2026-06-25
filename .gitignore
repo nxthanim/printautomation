@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.log
+server/__pycache__/
+server/*.db
+server/*.log
+client/dist/
+client/dist_electron/
+client/node_modules/
+client/*.pfx
+client/release/
+client/PrintAutomationClient-win32-x64/
