@@ -1,0 +1,7 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+sqlalchemy[asyncio]==2.0.23
+aiosqlite==0.20.0
+pydantic-settings==2.1.0
+openpyxl==3.1.2
+python-multipart==0.0.6

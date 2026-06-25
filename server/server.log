@@ -1,0 +1,74 @@
+INFO:     Started server process [7684]
+INFO:     Waiting for application startup.
+2026-06-25 15:57:43,499 [INFO] print_automation.database: Database tables created successfully
+2026-06-25 15:57:43,499 [INFO] print_automation.server: Server started: pdf_storage=./storage/pdfs, receipt_storage=./storage/receipts
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:63762 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63794 - "POST /api/orders HTTP/1.1" 401 Unauthorized
+2026-06-25 16:02:37,398 [INFO] print_automation.server: Client registered: ElectronClient (id=8670b274-1e78-48d4-a8fa-81935c727f8f, printers=12)
+INFO:     127.0.0.1:63795 - "POST /api/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63795 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:63795 - "GET /api/jobs/pending?client_id=8670b274-1e78-48d4-a8fa-81935c727f8f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63795 - "GET /api/jobs/pending?client_id=8670b274-1e78-48d4-a8fa-81935c727f8f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63851 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63869 - "GET /api/health HTTP/1.1" 200 OK
+2026-06-25 16:07:25,125 [INFO] print_automation.server: Client registered: ElectronClient (id=6801c663-aab5-4680-b1fa-e73425bd8483, printers=12)
+INFO:     127.0.0.1:63870 - "POST /api/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63972 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63972 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63972 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:63973 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63973 - "POST /api/orders HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63973 - "POST /api/orders HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63973 - "POST /api/orders HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63993 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63993 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:63993 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:58388 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58388 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58388 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:58389 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58396 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58397 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58408 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58409 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58421 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58421 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58501 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58501 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58501 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:58502 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58517 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58518 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58525 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58526 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58552 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58553 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58571 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58572 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58584 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58585 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58595 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58621 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58621 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58621 - "POST /api/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:58622 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58634 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58635 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58644 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58645 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58660 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58661 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58695 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58696 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58721 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58722 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58722 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58791 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58792 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58799 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58800 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58814 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58815 - "GET /api/jobs/pending?client_id=6801c663-aab5-4680-b1fa-e73425bd8483 HTTP/1.1" 200 OK

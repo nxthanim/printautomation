@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print Automation Dashboard</title>
+<link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Print Automation</h1>
+  </div>
+  <div id="status-summary">
+    <span class="summary-badge pending-badge" id="pending-count">Pending: 0</span>
+    <span class="summary-badge active-badge" id="active-count">Active: 0</span>
+    <span class="summary-badge printer-badge" id="printer-count">Printers: 0</span>
+  </div>
+</header>
+
+<main>
+
+  <section id="order-form-section">
+    <h2>New Order</h2>
+    <form id="order-form">
+      <div class="form-row">
+        <label>Customer Name
+          <input type="text" name="customer_name" placeholder="Enter customer name" required>
+        </label>
+        <label>TIN
+          <input type="text" name="customer_tin" placeholder="Tax identification number">
+        </label>
+      </div>
+      <div class="form-row">
+        <label>Registration
+          <input type="text" name="customer_registration" placeholder="Registration number">
+        </label>
+        <label>Phone
+          <input type="tel" name="customer_phone" placeholder="Phone number">
+        </label>
+      </div>
+      <div class="form-row">
+        <label class="file-label">PDF File
+          <input type="file" name="pdf" accept=".pdf" required>
+        </label>
+      </div>
+      <button type="submit" id="submit-btn">Submit Order</button>
+    </form>
+    <div id="order-alert" class="alert hidden"></div>
+  </section>
+
+  <section id="printer-section">
+    <div class="section-header">
+      <h2>Printers</h2>
+      <span class="section-subtitle" id="printer-subtitle">Monitoring all connected printers</span>
+    </div>
+    <div id="printer-grid">
+      <div class="loading">Loading printers...</div>
+    </div>
+  </section>
+
+  <section id="orders-section">
+    <div class="section-header">
+      <h2>Recent Orders</h2>
+      <span class="section-subtitle">Last 50 orders</span>
+    </div>
+    <div class="table-wrapper">
+      <table id="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Receipt</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="orders-body">
+          <tr><td colspan="5" class="loading-row">Loading orders...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Print Automation Server &copy; 2024 &mdash; Konica Minolta Production Print Solutions</p>
+</footer>
+
+<script src="/web/script.js"></script>
+</body>
+</html>
